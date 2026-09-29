@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nifty 50 Setup Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEF2F7;
+    --ink: #12213B;
+    --muted: #5B6B85;
+    --paper: #FFFFFF;
+
+    --bias-bg: #EDEAFB;
+    --bias-border: #7B68D9;
+    --bias-ink: #3B2E8C;
+
+    --ext-bg: #DDF0FC;
+    --ext-border: #2E86C6;
+    --ext-ink: #144A6E;
+
+    --int-bg: #DEF4E6;
+    --int-border: #279A5B;
+    --int-ink: #14512E;
+
+    --conf-bg: #FBEFD3;
+    --conf-border: #BE8A22;
+    --conf-ink: #5C4009;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.45;
+    padding: 20px 14px 60px;
+  }
+
+  h1,h2,.label{
+    font-family: 'Sora', -apple-system, sans-serif;
+  }
+
+  .wrap{ max-width: 520px; margin: 0 auto; }
+
+  header{ margin-bottom: 18px; }
+  header h1{
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  header p{
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .progress-shell{
+    margin-top: 14px;
+    background: var(--paper);
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+    border: 1px solid #D9E0EA;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7B68D9, #2E86C6, #279A5B, #BE8A22);
+    transition: width .35s ease;
+  }
+  .progress-text{
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .step{
+    margin-top: 22px;
+  }
+  .step-head{
+    display:flex;
+    align-items:baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .step-num{
+    font-family:'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .step-title{
+    font-weight: 700;
+    font-size: 1.02rem;
+  }
+
+  .card{
+    border-radius: 14px;
+    padding: 14px 14px 6px;
+    border: 1.5px solid transparent;
+  }
+  .card .tf{
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    display:inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+
+  .bias{ background: var(--bias-bg); border-color: var(--bias-border); }
+  .bias .tf{ background: rgba(123,104,217,0.16); color: var(--bias-ink); }
+
+  .conf{ background: var(--conf-bg); border-color: var(--conf-border); }
+  .conf .tf{ background: rgba(190,138,34,0.18); color: var(--conf-ink); }
+
+  .path-toggle{
+    display:flex;
+    gap: 8px;
+    margin: 6px 0 20px;
+    background: var(--paper);
+    padding: 5px;
+    border-radius: 12px;
+    border: 1px solid #D9E0EA;
+  }
+  .path-toggle button{
+    flex:1;
+    border: none;
+    background: transparent;
+    padding: 9px 6px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--muted);
+    border-radius: 9px;
+    cursor: pointer;
+  }
+  .path-toggle button.active.ext{ background: var(--ext-bg); color: var(--ext-ink); }
+  .path-toggle button.active.intp{ background: var(--int-bg); color: var(--int-ink); }
+
+  .path-card{ display:none; }
+  .path-card.show{ display:block; }
+
+  .grade-indicator{
+    font-family:'Sora', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--paper);
+    border: 1px solid #D9E0EA;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin: -4px 0 14px;
+  }
+
+  .sub-toggle{
+    display:flex;
+    gap: 6px;
+    margin: 10px 0 10px;
+  }
+  .sub-toggle button{
+    flex:1;
+    border: 1px solid #D9E0EA;
+    background: var(--paper);
+    padding: 7px 6px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-radius: 9px;
+    cursor: pointer;
+  }
+  .sub-toggle button.sub-active{
+    background: #E9EDF3;
+    color: var(--ink);
+    border-color: #B9C3D2;
+  }
+  .sub-toggle button.plus.sub-active{
+    background: #FBEFD3;
+    color: var(--conf-ink);
+    border-color: var(--conf-border);
+  }
+
+  .sub-card{ display:none; }
+  .sub-card.show{ display:block; }
+
+  .plus-card{ border-width: 2px; }
+
+  .grade-badge{
+    display:inline-block;
+    font-family:'Sora', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+  .grade-standard{ background: #E9EDF3; color: var(--muted); }
+  .grade-plus{ background: linear-gradient(90deg,#F3D67A,#E0AC3E); color: #4A2E00; }
+
+  .ext{ background: var(--ext-bg); border-color: var(--ext-border); }
+  .ext .tf{ background: rgba(46,134,198,0.16); color: var(--ext-ink); }
+
+  .intp{ background: var(--int-bg); border-color: var(--int-border); }
+  .intp .tf{ background: rgba(39,154,91,0.16); color: var(--int-ink); }
+
+  label.item{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 9px 4px;
+    cursor: pointer;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  label.item:first-of-type{ border-top: none; }
+
+  label.item input{
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  label.item span{
+    font-size: 0.95rem;
+  }
+
+  label.item input:checked ~ span{
+    text-decoration: line-through;
+    opacity: 0.55;
+  }
+
+  .or-row{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin: 4px 0;
+  }
+  .or-row .line{ flex:1; height:1px; background: rgba(190,138,34,0.35); }
+  .or-row span{
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--conf-ink);
+    letter-spacing: 0.5px;
+  }
+
+  .result{
+    margin-top: 24px;
+    text-align:center;
+    padding: 16px;
+    border-radius: 14px;
+    font-family:'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    background: var(--paper);
+    border: 1.5px dashed #C7D0DD;
+    color: var(--muted);
+    transition: all .25s ease;
+  }
+  .result.ready{
+    background: #16A34A;
+    border: 1.5px solid #0E7C39;
+    color: #fff;
+  }
+
+  .reset{
+    display:block;
+    margin: 18px auto 0;
+    background: transparent;
+    border: 1px solid #C7D0DD;
+    color: var(--muted);
+    font-size: 0.82rem;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .note{
+    margin-top: 22px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid #D9E0EA;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Nifty 50 — Entry Checklist</h1>
+    <p>Bias → MBOS confirmation → Entry trigger. Path-ஐ தேர்ந்தெடுத்து ஒவ்வொரு step-ஐயும் tick பண்ணுங்க.</p>
+    <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 5 checked</div>
+  </header>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 1</span><span class="step-title">Bias</span></div>
+    <div class="card bias">
+      <span class="tf">15 Minute</span>
+      <label class="item"><input type="checkbox" class="track" data-w="1"><span>HTF direction / bias 15m chart-la confirm pannirukken</span></label>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 2</span><span class="step-title">MBOS Confirmation — Path Select</span></div>
+    <div class="path-toggle">
+      <button class="active ext" id="btnExt" onclick="setPath('ext')">External MBOS</button>
+      <button class="intp" id="btnInt" onclick="setPath('int')">Internal MBOS</button>
+    </div>
+
+    <div class="grade-indicator" id="gradeIndicator">Current setup: External MBOS · Standard confluence</div>
+
+    <div class="path-card show ext" id="pathExt">
+      <div class="card ext base-item">
+        <span class="tf">5 Minute</span>
+        <label class="item"><input type="checkbox" class="track" data-w="1"><span>External MBOS 5m-la identify pannirukken</span></label>
+      </div>
+
+      <div class="sub-toggle">
+        <button class="sub-active" id="btnExtStd" onclick="setSub('ext','std')">5 Min Only</button>
+        <button class="plus" id="btnExtPlus" onclick="setSub('ext','plus')">5m + 15m Combined</button>
+      </div>
+
+      <div class="sub-card show" id="extStd">
+        <div class="card ext">
+          <span class="grade-badge grade-standard">Standard confluence</span>
+          <span class="tf">5 Minute only</span>
+          <label class="item"><input type="checkbox" class="track"><span>OB + FVG confluence 5m timeframe la mattum kidaichirukku</span></label>
+        </div>
+      </div>
+
+      <div class="sub-card" id="extPlus">
+        <div class="card ext plus-card">
+          <span class="grade-badge grade-plus">A+ · High Probability</span>
+          <span class="tf">5m + 15m Combined</span>
+          <label class="item"><input type="checkbox" class="track"><span>OB + FVG confluence 5m AND 15m rendu timeframe-layum align aagirukku</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="path-card int" id="pathInt">
+      <div class="card intp base-item">
+        <span class="tf">15 Minute</span>
+        <label class="item"><input type="checkbox" class="track" data-w="1"><span>Internal MBOS 15m-la identify pannirukken</span></label>
+      </div>
+
+      <div class="sub-toggle">
+        <button class="sub-active" id="btnIntStd" onclick="setSub('int','std')">50% FVG</button>
+        <button class="plus" id="btnIntPlus" onclick="setSub('int','plus')">OB</button>
+      </div>
+
+      <div class="sub-card show" id="intStd">
+        <div class="card intp">
+          <span class="grade-badge grade-standard">Standard confluence</span>
+          <span class="tf">15 Minute</span>
+          <label class="item"><input type="checkbox" class="track"><span>50% FVG 15m-la confirm ஆகிடுச்சு</span></label>
+        </div>
+      </div>
+
+      <div class="sub-card" id="intPlus">
+        <div class="card intp plus-card">
+          <span class="grade-badge grade-plus">A+ · High Probability</span>
+          <span class="tf">15 Minute</span>
+          <label class="item"><input type="checkbox" class="track"><span>OB 15m-la confirm ஆகிடுச்சு</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 3</span><span class="step-title">Confirmation / Entry</span></div>
+    <div class="card conf">
+      <span class="tf">1 Minute</span>
+      <label class="item"><input type="checkbox" class="track conf-item" data-w="1" name="confgroup"><span>50% OB + Cemented Entry கிடைச்சிருச்சு</span></label>
+      <div class="or-row"><div class="line"></div><span>OR</span><div class="line"></div></div>
+      <label class="item"><input type="checkbox" class="track conf-item" data-w="1" name="confgroup"><span>OB + FVG Entry கிடைச்சிருச்சு</span></label>
+    </div>
+  </div>
+
+  <div class="result" id="resultBox">Steps complete பண்ணா entry ready-nu காட்டும்</div>
+
+  <button class="reset" onclick="resetAll()">Reset checklist</button>
+
+  <div class="note">Note: Idhu உங்க flowchart structure-ஐ checklist ஆக மாத்தி இருக்கேன். Actual entry criteria (OB validity, FVG %, etc.) உங்க own rules படி edit பண்ணிக்கோங்க — trading decision உங்களுடையது தான்.</div>
+
+</div>
+
+<script>
+  let currentPath = 'ext';
+  let currentSub = { ext: 'std', int: 'std' };
+
+  function setPath(p){
+    currentPath = p;
+    document.getElementById('btnExt').classList.toggle('active', p==='ext');
+    document.getElementById('btnInt').classList.toggle('active', p==='int');
+    document.getElementById('pathExt').classList.toggle('show', p==='ext');
+    document.getElementById('pathInt').classList.toggle('show', p==='int');
+    updateProgress();
+  }
+
+  function setSub(path, sub){
+    currentSub[path] = sub;
+    if(path === 'ext'){
+      document.getElementById('btnExtStd').classList.toggle('sub-active', sub==='std');
+      document.getElementById('btnExtPlus').classList.toggle('sub-active', sub==='plus');
+      document.getElementById('extStd').classList.toggle('show', sub==='std');
+      document.getElementById('extPlus').classList.toggle('show', sub==='plus');
+    } else {
+      document.getElementById('btnIntStd').classList.toggle('sub-active', sub==='std');
+      document.getElementById('btnIntPlus').classList.toggle('sub-active', sub==='plus');
+      document.getElementById('intStd').classList.toggle('show', sub==='std');
+      document.getElementById('intPlus').classList.toggle('show', sub==='plus');
+    }
+    updateProgress();
+  }
+
+  function updateGradeIndicator(){
+    const pathLabel = currentPath === 'ext' ? 'External MBOS' : 'Internal MBOS';
+    const subLabel = currentSub[currentPath] === 'plus'
+      ? (currentPath === 'ext' ? '5m + 15m Combined · A+ High Probability' : '15m OB · A+ High Probability')
+      : (currentPath === 'ext' ? '5 Min Only · Standard' : '15m 50% FVG · Standard');
+    document.getElementById('gradeIndicator').textContent = 'Current setup: ' + pathLabel + ' · ' + subLabel;
+  }
+
+  function updateProgress(){
+    const bias = document.querySelector('.step:nth-of-type(1) .track');
+    const baseItem = document.querySelector('.path-card.show .base-item .track');
+    const subItem = document.querySelector('.path-card.show .sub-card.show .track');
+    const confBoxes = document.querySelectorAll('.conf-item');
+
+    const total = 4; // bias + path base + active sub-confluence + confirmation
+    let done = 0;
+
+    if(bias && bias.checked) done += 1;
+    if(baseItem && baseItem.checked) done += 1;
+    if(subItem && subItem.checked) done += 1;
+    const confDone = Array.from(confBoxes).some(cb => cb.checked);
+    if(confDone) done += 1;
+
+    const pct = Math.round((done/total)*100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' checked';
+
+    updateGradeIndicator();
+
+    const box = document.getElementById('resultBox');
+    if(done === total){
+      const grade = currentSub[currentPath] === 'plus' ? 'A+ High Probability' : 'Standard';
+      box.textContent = '✓ Entry ready — ' + grade + ' setup';
+      box.classList.add('ready');
+    } else {
+      box.textContent = 'Steps complete பண்ணா entry ready-nu காட்டும்';
+      box.classList.remove('ready');
+    }
+  }
+
+  document.querySelectorAll('.track').forEach(cb => {
+    cb.addEventListener('change', updateProgress);
+  });
+
+  function resetAll(){
+    document.querySelectorAll('.track').forEach(cb => cb.checked = false);
+    updateProgress();
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>

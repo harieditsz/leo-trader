@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XAUUSD Setup Checklist v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEF2F7;
+    --ink: #12213B;
+    --muted: #5B6B85;
+    --paper: #FFFFFF;
+
+    --bias-bg:#D9EEFB; --bias-border:#2E86C6; --bias-ink:#144A6E;
+    --extm-bg:#E6DFF8; --extm-border:#7B5FDD; --extm-ink:#3B2E8C;
+    --intm-bg:#FCF1B8; --intm-border:#D9B92E; --intm-ink:#6E5708;
+    --type-bg:#DBF3E2; --type-border:#279A5B; --type-ink:#14512E;
+    --conf45-bg:#FCE7C6; --conf45-border:#D98E2B; --conf45-ink:#6E4108;
+    --confirm-bg:#F9D3DE; --confirm-border:#D9587D; --confirm-ink:#7A1E39;
+    --entry-bg:#CDEFF1; --entry-border:#1E9AA0; --entry-ink:#0E4B4E;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.45;
+    padding: 20px 14px 60px;
+  }
+
+  h1,.label,.tf,.opt-btn,.ticker-badge,.grade-tag{ font-family:'Sora', -apple-system, sans-serif; }
+
+  .wrap{ max-width: 520px; margin: 0 auto; }
+
+  .ticker-badge{
+    display:inline-block; background:#0F1C2E; color:#fff; font-weight:800;
+    font-size:1.15rem; padding: 10px 22px; border-radius: 12px; letter-spacing: 0.5px;
+  }
+
+  header{ margin-bottom: 18px; text-align:center; }
+  header p{ margin: 10px 0 0; color: var(--muted); font-size: 0.9rem; text-align:left; }
+
+  .progress-shell{
+    margin-top: 14px; background: var(--paper); border-radius: 999px;
+    height: 10px; overflow: hidden; border: 1px solid #D9E0EA;
+  }
+  .progress-fill{
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg,#2E86C6,#7B5FDD,#D9B92E,#279A5B,#D98E2B,#D9587D,#1E9AA0);
+    transition: width .35s ease;
+  }
+  .progress-text{ font-size: 0.8rem; color: var(--muted); margin-top: 6px; text-align: right; }
+
+  .step{ margin-top: 22px; }
+  .step-head{ display:flex; align-items:baseline; gap: 8px; margin-bottom: 8px; }
+  .step-num{ font-family:'Sora', sans-serif; font-weight: 800; font-size: 0.85rem; color: var(--muted); }
+  .step-title{ font-weight: 700; font-size: 1.02rem; }
+
+  .card{ border-radius: 14px; padding: 14px 14px 12px; border: 1.5px solid transparent; }
+  .card .tf{
+    font-size: 0.76rem; font-weight: 700; display:inline-block;
+    padding: 2px 9px; border-radius: 999px; margin-bottom: 10px;
+  }
+
+  .bias{ background: var(--bias-bg); border-color: var(--bias-border); }
+  .bias .tf{ background: rgba(46,134,198,0.16); color: var(--bias-ink); }
+
+  .extm{ background: var(--extm-bg); border-color: var(--extm-border); }
+  .extm .tf{ background: rgba(123,95,221,0.16); color: var(--extm-ink); }
+
+  .intm{ background: var(--intm-bg); border-color: var(--intm-border); }
+  .intm .tf{ background: rgba(217,185,46,0.22); color: var(--intm-ink); }
+
+  .type{ background: var(--type-bg); border-color: var(--type-border); }
+  .type .tf{ background: rgba(39,154,91,0.16); color: var(--type-ink); }
+
+  .conf45{ background: var(--conf45-bg); border-color: var(--conf45-border); }
+  .conf45 .tf{ background: rgba(217,142,43,0.18); color: var(--conf45-ink); }
+
+  .confirm{ background: var(--confirm-bg); border-color: var(--confirm-border); }
+  .confirm .tf{ background: rgba(217,88,125,0.18); color: var(--confirm-ink); }
+
+  .entry{ background: var(--entry-bg); border-color: var(--entry-border); }
+  .entry .tf{ background: rgba(30,154,160,0.18); color: var(--entry-ink); }
+
+  label.item{ display:flex; align-items:flex-start; gap: 10px; padding: 9px 4px; cursor: pointer; }
+  label.item input{ margin-top: 3px; width: 18px; height: 18px; accent-color: var(--ink); flex-shrink:0; }
+  label.item input:checked ~ span{ text-decoration: line-through; opacity: 0.55; }
+  label.item span{ font-size: 0.95rem; }
+
+  .opt-group{ display:flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .opt-btn{
+    flex: 1 1 auto; min-width: 120px; text-align:center;
+    border: 1.5px solid rgba(0,0,0,0.15); background: rgba(255,255,255,0.6);
+    color: var(--ink); font-weight: 700; font-size: 0.86rem;
+    padding: 10px 8px; border-radius: 10px; cursor: pointer;
+  }
+  .opt-btn.selected{ background: var(--ink); color: #fff; border-color: var(--ink); }
+  .bias .opt-btn.selected{ background: var(--bias-ink); border-color: var(--bias-ink); }
+  .extm .opt-btn.selected{ background: var(--extm-ink); border-color: var(--extm-ink); }
+  .intm .opt-btn.selected{ background: var(--intm-ink); border-color: var(--intm-ink); }
+  .type .opt-btn.selected{ background: var(--type-ink); border-color: var(--type-ink); }
+  .conf45 .opt-btn.selected{ background: var(--conf45-ink); border-color: var(--conf45-ink); }
+  .confirm .opt-btn.selected{ background: var(--confirm-ink); border-color: var(--confirm-ink); }
+  .entry .opt-btn.selected{ background: var(--entry-ink); border-color: var(--entry-ink); }
+
+  .grade-tag{
+    margin-top: 12px; font-size: 0.78rem; font-weight: 800;
+    padding: 8px 10px; border-radius: 10px; text-align:center;
+  }
+  .grade-pending{ background: rgba(255,255,255,0.6); color: var(--muted); border: 1px dashed #C7D0DD; }
+  .grade-plus{ background: linear-gradient(90deg,#F3D67A,#E0AC3E); color: #4A2E00; }
+  .grade-a{ background: #E1E9F5; color: #21365E; }
+
+  .result{
+    margin-top: 24px; text-align:center; padding: 16px; border-radius: 14px;
+    font-family:'Sora', sans-serif; font-weight: 700; font-size: 0.9rem;
+    background: var(--paper); border: 1.5px dashed #C7D0DD; color: var(--muted);
+    transition: all .25s ease;
+  }
+  .result.ready{ background: #16A34A; border: 1.5px solid #0E7C39; color: #fff; }
+  .result.plusready{ background: linear-gradient(90deg,#E0AC3E,#C98A1F); border: 1.5px solid #8A5F0F; color:#fff; }
+
+  .reset{
+    display:block; margin: 18px auto 0; background: transparent;
+    border: 1px solid #C7D0DD; color: var(--muted); font-size: 0.82rem;
+    padding: 8px 16px; border-radius: 999px; cursor: pointer;
+  }
+
+  .note{
+    margin-top: 22px; font-size: 0.82rem; color: var(--muted);
+    background: var(--paper); border-radius: 10px; padding: 10px 12px; border: 1px solid #D9E0EA;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="ticker-badge">XAUUSD</span>
+    <p>Ovvoru "OR" step-um tap-panni select pannunga. Confirmation-la enna select pannringo adha bathi setup grade (A+ / A) auto-ஆ காட்டும்.</p>
+    <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 7 checked</div>
+  </header>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 1</span><span class="step-title">Bias</span></div>
+    <div class="card bias">
+      <div class="opt-group" data-group="bias">
+        <button class="opt-btn" onclick="selectOption('bias','BUY', this)">BUY</button>
+        <button class="opt-btn" onclick="selectOption('bias','SELL', this)">SELL</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 2</span><span class="step-title">External MBOS</span></div>
+    <div class="card extm">
+      <span class="tf">15 Minutes</span>
+      <label class="item"><input type="checkbox" class="track" id="cbExtm"><span>External MBOS 15m-la identify pannirukken</span></label>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 3</span><span class="step-title">Internal MBOS</span></div>
+    <div class="card intm">
+      <span class="tf">Align check</span>
+      <div class="opt-group" data-group="internalmbos">
+        <button class="opt-btn" onclick="selectOption('internalmbos','Align Aguthu', this)">External-oda Align Aguthu</button>
+        <button class="opt-btn" onclick="selectOption('internalmbos','Align Agala', this)">Align Agala</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 4</span><span class="step-title">Trade Type</span></div>
+    <div class="card type">
+      <div class="opt-group" data-group="tradetype">
+        <button class="opt-btn" onclick="selectOption('tradetype','Continuation', this)">Continuation</button>
+        <button class="opt-btn" onclick="selectOption('tradetype','Reversal', this)">Reversal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 5</span><span class="step-title">External MBOS With FVG + OB</span></div>
+    <div class="card conf45">
+      <span class="tf">45m or 45m 50% FVG</span>
+      <div class="opt-group" data-group="mbosconf">
+        <button class="opt-btn" onclick="selectOption('mbosconf','45m OB + FVG', this)">45m OB + FVG</button>
+        <button class="opt-btn" onclick="selectOption('mbosconf','45m 50% FVG', this)">45m 50% FVG</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 6</span><span class="step-title">Confirmation</span></div>
+    <div class="card confirm">
+      <span class="tf">1 Minute</span>
+      <div class="opt-group" data-group="confirmation">
+        <button class="opt-btn" onclick="selectOption('confirmation','Proper LQS + MSS', this)">Proper LQS + MSS</button>
+        <button class="opt-btn" onclick="selectOption('confirmation','SMT', this)">Antha Zone kulla SMT Irukanum</button>
+      </div>
+      <div class="grade-tag grade-pending" id="gradeTag">Setup grade: confirmation select பண்ணுங்க</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">STEP 7</span><span class="step-title">Entry</span></div>
+    <div class="card entry">
+      <span class="tf">3 Minutes</span>
+      <div class="opt-group" data-group="entry">
+        <button class="opt-btn" onclick="selectOption('entry','FVG', this)">FVG</button>
+        <button class="opt-btn" onclick="selectOption('entry','Breaker Block', this)">Breaker Block</button>
+        <button class="opt-btn" onclick="selectOption('entry','IFVG', this)">IFVG</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="result" id="resultBox">Steps complete பண்ணா entry ready-nு காட்டும்</div>
+
+  <button class="reset" onclick="resetAll()">Reset checklist</button>
+
+  <div class="note">Grading logic: External MBOS + Internal MBOS align ஆகி, proper OB-la <b>LQS + MSS</b> கிடைச்சா → <b>A+ Setup</b>. <b>SMT</b> zone confirmation-ஆ இருந்தா → <b>A Setup</b>. "OR" உள்ள step-கள் எல்லாம் tap-to-select ஆக வச்சிருக்கேன், column-ஆ stack பண்ணல. Criteria உங்க rules படி edit பண்ணிக்கோங்க.</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const selections = {};
+
+  function selectOption(group, value, btn){
+    document.querySelectorAll('.opt-group[data-group="'+group+'"] .opt-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selections[group] = value;
+    if(group === 'confirmation' || group === 'internalmbos') updateGrade();
+    updateProgress();
+  }
+
+  function updateGrade(){
+    const el = document.getElementById('gradeTag');
+    if(!el) return;
+    if(selections.confirmation === 'Proper LQS + MSS' && selections.internalmbos === 'Align Aguthu'){
+      el.textContent = '★ A+ Setup — External + Internal MBOS aligned, Proper OB LQS+MSS';
+      el.className = 'grade-tag grade-plus';
+    } else if(selections.confirmation === 'Proper LQS + MSS' && selections.internalmbos === 'Align Agala'){
+      el.textContent = 'A Setup — LQS+MSS okay, but Internal MBOS align aagala';
+      el.className = 'grade-tag grade-a';
+    } else if(selections.confirmation === 'SMT'){
+      el.textContent = 'A Setup — SMT zone confirmation';
+      el.className = 'grade-tag grade-a';
+    } else {
+      el.textContent = 'Setup grade: Internal MBOS align + Confirmation select பண்ணுங்க';
+      el.className = 'grade-tag grade-pending';
+    }
+  }
+
+  function updateProgress(){
+    const total = 7;
+    let done = 0;
+
+    const cbExtm = document.getElementById('cbExtm');
+
+    if(selections.bias) done += 1;
+    if(cbExtm && cbExtm.checked) done += 1;
+    if(selections.internalmbos) done += 1;
+    if(selections.tradetype) done += 1;
+    if(selections.mbosconf) done += 1;
+    if(selections.confirmation) done += 1;
+    if(selections.entry) done += 1;
+
+    const pct = Math.round((done/total)*100);
+    const fill = document.getElementById('progressFill');
+    const text = document.getElementById('progressText');
+    if(fill) fill.style.width = pct + '%';
+    if(text) text.textContent = done + ' / ' + total + ' checked';
+
+    const box = document.getElementById('resultBox');
+    if(!box) return;
+    if(done === total){
+      const gradeLabel = (selections.confirmation === 'Proper LQS + MSS' && selections.internalmbos === 'Align Aguthu') ? 'A+ Setup' : 'A Setup';
+      const summary = [selections.bias, selections.tradetype, selections.mbosconf, selections.confirmation, selections.entry].join(' · ');
+      box.textContent = '✓ Entry ready — ' + gradeLabel + ' — ' + summary;
+      box.classList.remove('ready','plusready');
+      box.classList.add(gradeLabel === 'A+ Setup' ? 'plusready' : 'ready');
+    } else {
+      box.textContent = 'Steps complete பண்ணா entry ready-nு காட்டும்';
+      box.classList.remove('ready','plusready');
+    }
+  }
+
+  const cbExtmInit = document.getElementById('cbExtm');
+  if(cbExtmInit) cbExtmInit.addEventListener('change', updateProgress);
+
+  window.selectOption = selectOption;
+
+  window.resetAll = function(){
+    document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    const cb = document.getElementById('cbExtm');
+    if(cb) cb.checked = false;
+    for(const k in selections) delete selections[k];
+    updateGrade();
+    updateProgress();
+  };
+
+  updateProgress();
+});
+</script>
+</body>
+</html>

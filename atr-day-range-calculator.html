@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATR Day Range Calculator</title>
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#14231c;--mute:#5d6f66;--line:#d5dfd9;--up:#0d7a4a;--dn:#c23a2b;--acc:#14231c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a15;--card:#182620;--ink:#e6f0ea;--mute:#8ea398;--line:#2a3d34;--up:#3ddc97;--dn:#ff7b6b;--acc:#e6f0ea}}
+:root[data-theme="dark"]{--bg:#0f1a15;--card:#182620;--ink:#e6f0ea;--mute:#8ea398;--line:#2a3d34;--up:#3ddc97;--dn:#ff7b6b;--acc:#e6f0ea}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,sans-serif;padding:16px;max-width:520px;margin-inline:auto}
+h1{font-size:20px;margin:4px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+label:first-child{margin-top:0}
+input{width:100%;font-size:18px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input:focus{outline:2px solid var(--acc)}
+.row{display:flex;gap:10px}.row>div{flex:1}
+.big{font-size:26px;font-weight:700}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.k{font-size:12px;color:var(--mute)}
+.bar{height:14px;border-radius:7px;background:var(--line);position:relative;margin:10px 0 6px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;background:var(--acc);opacity:.85}
+p{margin:6px 0;font-size:14px;line-height:1.5}
+small{color:var(--mute)}
+</style>
+</head>
+<body>
+<h1>ATR Day Range Calculator</h1>
+<div class="card">
+  <div class="row">
+    <div><label for="atr">Daily ATR(14)</label><input id="atr" type="number" inputmode="decimal" value="250"></div>
+    <div><label for="open">Day Open</label><input id="open" type="number" inputmode="decimal" value="22732"></div>
+  </div>
+  <div class="row">
+    <div><label for="hi">Day High (ippo varaikkum)</label><input id="hi" type="number" inputmode="decimal" value="22732"></div>
+    <div><label for="lo">Day Low (ippo varaikkum)</label><input id="lo" type="number" inputmode="decimal" value="22597"></div>
+  </div>
+  <label for="cmp">Current Price</label><input id="cmp" type="number" inputmode="decimal" value="22597">
+</div>
+
+<div class="card" id="start">
+  <div class="k">Start of day: Open ± ATR</div>
+  <div class="g"><div><div class="k">Upper</div><div class="big up" id="ou">-</div></div><div><div class="k">Lower</div><div class="big dn" id="ol">-</div></div></div>
+</div>
+
+<div class="card">
+  <div class="k">Ippo varaikkum use aana range</div>
+  <div class="big" id="used">-</div>
+  <div class="bar"><i id="fill"></i></div>
+  <p id="rem"></p>
+</div>
+
+<div class="card">
+  <div class="g">
+    <div><div class="k">Upside target (Low + ATR)</div><div class="big up" id="ut">-</div><small id="uroom"></small></div>
+    <div><div class="k">Downside target (High − ATR)</div><div class="big dn" id="dt">-</div><small id="droom"></small></div>
+  </div>
+</div>
+
+<p><small>ATR oru estimate thaan, guarantee illa. Event / expiry / gap days-la ATR-ai break pannalaam. High/Low maarum podhu update pannunga.</small></p>
+
+<script>
+const $=id=>document.getElementById(id);
+const f=n=>Math.round(n*100)/100;
+function calc(){
+  const atr=parseFloat($('atr').value),o=parseFloat($('open').value),
+        hi=parseFloat($('hi').value),lo=parseFloat($('lo').value),c=parseFloat($('cmp').value);
+  if([atr,o,hi,lo,c].some(isNaN)||atr<=0){return}
+  $('ou').textContent=f(o+atr);$('ol').textContent=f(o-atr);
+  const used=hi-lo, rem=atr-used, pct=Math.min(100,used/atr*100);
+  $('used').textContent=f(used)+' / '+f(atr)+' pts';
+  $('fill').style.left='0';$('fill').style.width=pct+'%';
+  $('rem').textContent= rem>0
+    ? 'Meedham ~'+f(rem)+' points thaan iruku. Range '+f(pct)+'% use aayaachu.'
+    : 'ATR already '+f(-rem)+' points thaandiyaachu. Extended move day, careful-a irunga.';
+  const ut=lo+atr, dt=hi-atr;
+  $('ut').textContent=f(ut);$('dt').textContent=f(dt);
+  const ur=ut-c, dr=c-dt;
+  $('uroom').textContent= ur>0 ? 'Ippo irundhu +'+f(ur)+' pts' : 'Target reach aayaachu';
+  $('droom').textContent= dr>0 ? 'Ippo irundhu −'+f(dr)+' pts' : 'Target reach aayaachu';
+}
+['atr','open','hi','lo','cmp'].forEach(id=>$(id).addEventListener('input',calc));
+calc();
+</script>
+</body>
+</html>
